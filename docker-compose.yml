@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  # Flask Application
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8013:5000"
+    depends_on:
+      - mysql-db
+    environment:
+      - DATABASE_URL=mysql://root:root@mysql-db:3306/todo
+
+  # MySQL Database
+  mysql-db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: todo
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db.sql:/docker-entrypoint-initdb.d/db.sql
+
+volumes:
+  mysql_data:
