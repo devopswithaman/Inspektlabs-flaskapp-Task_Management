@@ -88,7 +88,7 @@ def edit_task(id):
     form = EditTodoForm()
     task = Task.query.filter_by(id =id,todo_owner = current_user.id).first()
     
-    if form.validate_on_submit():
+    if request.method == 'POST':
         task.task_name = form.task_name.data
         task.due_date = form.due_date.data
         task.status = form.status.data
